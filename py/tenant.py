@@ -11,7 +11,7 @@ def read_excel_archive(archive_name):
     # Iterar sobre as linhas do DataFrame
     for index, row in df.iterrows():
         tenat = row['LOCATÁRIO (INQUILINO)']  
-        amount = round(row['VALOR BOLETO'],2) 
+        amount = round(row['VALOR BOLETO'],2) # arredondar 2 casas decimais
         situation = row['SITUAÇÃO']
 
         # Se a situação estiver vazia ou não for 'pago', definir como 'rever'
