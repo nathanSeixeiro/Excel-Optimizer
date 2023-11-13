@@ -1,32 +1,29 @@
 import os
 import pandas as pd
 
-locatarios = {}
-
-def ler_arquivo_excel(nome_arquivo):
-    df = pd.read_excel(nome_arquivo)
+def read_excel_archive(archive_name):
+    df = pd.read_excel(archive_name)
 
     # Extrair o mês a partir do nome do arquivo
-    mes = nome_arquivo.split(' ')[2].capitalize()
-    print(f"\nSITUAÇÃO DOS INQUILINO NO MÊS: {mes}")
+    month = archive_name.split(' ')[2].capitalize()
+    print(f"\nSITUAÇÃO DOS INQUILINO NO MÊS: {month}")
 
     # Iterar sobre as linhas do DataFrame
     for index, row in df.iterrows():
-        locatario = row['LOCATÁRIO (INQUILINO)']  
-        valor_boleto = round(row['VALOR BOLETO'],2) 
-        situacao = row['SITUAÇÃO']
+        tenat = row['LOCATÁRIO (INQUILINO)']  
+        amount = round(row['VALOR BOLETO'],2) 
+        situation = row['SITUAÇÃO']
 
         # Se a situação estiver vazia ou não for 'pago', definir como 'rever'
-        situacao = 'REVER' if pd.isna(situacao) or situacao.lower() != 'pago' else situacao
+        situation = 'REVER' if pd.isna(situation) or situation.lower() != 'pago' else situation
        
          # Se o nome for invalido não exibir  
-        if isinstance(locatario, str):
-            print(f"\nLocatário: {locatario}\n Valor: {valor_boleto}\n Situação: {situacao}")
+        if isinstance(tenat, str):
+            print(f"\nLocatário: {tenat}\n Valor: {amount}\n Situação: {situation}")
 
-    print(f"Arquivo {nome_arquivo} lido com sucesso.")
+    print(f"Arquivo {archive_name} lido com sucesso.")
 
 # Caminho relativo para o arquivo na mesma pasta
-arquivo = './JOACIR ROCHA SETEMBRO 23 - copia.xlsx'
-arquivo_path = os.path.abspath(arquivo)  # Obtém o caminho absoluto
+archive = os.path.abspath('./JOACIR ROCHA SETEMBRO 23 - copia.xlsx')  # Obtém o caminho absoluto
 
-ler_arquivo_excel(arquivo_path)
+read_excel_archive(archive)
