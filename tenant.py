@@ -10,9 +10,9 @@ def read_excel_archive(archive_name, info_tenants):
     # Iterar sobre as linhas do DataFrame
     for index, row in df.iterrows():
         tenant = str(row['LOCATÁRIO (INQUILINO)'])  # Convertendo para string
-        amount = round(row['VALOR BOLETO'], 2)   # arredondar 2 casas decimais
-        transfer_amount = round(row['REPASSE FINAL'], 2)  # arredondar 2 casas decimais
-        assessment_discont = round(row['MULTA / DESCONTO'],2)
+        amount = round(row['VALOR BOLETO'], 2) or 0   # arredondar 2 casas decimais
+        transfer_amount = round(row['REPASSE FINAL'], 2) or 0  
+        assessment_discont = round(row['MULTA / DESCONTO'],2) or 0
         consume_bills = row['CONTAS DE CONSUMO']
         adm_amount = round(row['VALOR ADM'],2)
         situation = row['SITUAÇÃO']
@@ -24,12 +24,9 @@ def read_excel_archive(archive_name, info_tenants):
         situation = 'REVER' if pd.isna(situation) or situation.lower() != 'pago' else situation
 
         # Se o nome for valido e se tiver contas de consumo  
+
         if isinstance(tenant, str) :
-            assessment_discont = 0 if pd.isna(assessment_discont) or assessment_discont != float else assessment_discont
-            water_bill = 0 if pd.isna(water_bill) or water_bill != float else water_bill
-            light_bill = 0 if pd.isna(light_bill) or light_bill != float else light_bill
-            gas_bill = 0 if pd.isna(gas_bill) or gas_bill != float else gas_bill
-            info_tenants.append({
+           info_tenants.append({
                 'Locatário': tenant,
                 'Valor Boleto': amount,
                 'Repasse': transfer_amount,
@@ -41,7 +38,7 @@ def read_excel_archive(archive_name, info_tenants):
                 'Multa/Desconto': assessment_discont,
                 'Situação': situation,
                 'Mês': month
-            })
+           })
 
 def showAllRecords(info_locatarios_sorted):
     # Exibir informações ordenadas
@@ -50,7 +47,7 @@ def showAllRecords(info_locatarios_sorted):
 
 def showSomeRecords(info_locatarios_sorted):
     # exibi 10 registros
-    for i in range(min(30, len(info_locatarios_sorted))):
+    for i in range(min(50, len(info_locatarios_sorted))):
         info = info_locatarios_sorted[i]
         print(f"\nLocatário: {info['Locatário']},\n  Valor do boleto: {info['Valor Boleto']},\n  Valor Repasse: {info['Repasse']},\n  Água: {info['Água']},\n  Luz: {info['Luz']},\n  Gás:{info['Gás']},\n Valor ADM: {info['Valor ADM']},\n  Multa/Desconto: {info['Multa/Desconto']},\n  Situação no mês de {info['Mês']}: {info['Situação']}\n ")
 
