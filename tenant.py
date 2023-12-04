@@ -67,7 +67,7 @@ def showAllRecords(info_locatarios_sorted):
 
 def showSomeRecords(info_locatarios_sorted):
     # exibi 10 registros
-    for i in range(min(10, len(info_locatarios_sorted))):
+    for i in range(min(110, len(info_locatarios_sorted))):
         info = info_locatarios_sorted[i]
         print(f"\nLocatário: {info['Locatário']},\n  Aluguel: {info['Aluguel']},\n  Valor do boleto: {info['Valor Boleto']},\n  Valor Repasse: {info['Repasse']},\n  Água: {info['Água']},\n  Luz: {info['Luz']},\n  Gás:{info['Gás']},\n  Condominio: {info['Condominio']},\n  IPTU: {info['IPTU']},\n Valor ADM: {info['Valor ADM']},\n  Multa/Desconto: {info['Multa/Desconto']},\n  Situação no mês de {info['Mês']}: {info['Situação']}\n ")
 
