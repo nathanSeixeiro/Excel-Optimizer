@@ -10,7 +10,6 @@ def read_excel_archive(archive_name, info_tenants):
     # Iterar sobre as linhas do DataFrame
     for index, row in df.iterrows():
         tenant = str(row['LOCATÁRIO (INQUILINO)'])  # Convertendo para string
-        # amount = round(row['VALOR BOLETO'], 2) or 0   # arredondar 2 casas decimais
         amount = row['VALOR BOLETO'] or 0   # arredondar 2 casas decimais
         transfer_amount = row['REPASSE FINAL'] or 0  
         rent = row['ALUGUEL'] or 0  
@@ -19,10 +18,12 @@ def read_excel_archive(archive_name, info_tenants):
         assessment_discont = row['MULTA / DESCONTO'] or 0.0
         consume_bills = row['CONTAS DE CONSUMO']
         adm_amount = row['VALOR ADM'] or 0.0 
-        situation = row['SITUAÇÃO'] or 0.0
+        situation = row['SITUAÇÃO'] 
         water_bill = row['ÁGUA '] or 0.0
         light_bill = row['LUZ'] or 0.0
         gas_bill = row['GÁS '] or 0.0
+        transfer_date = row['DATA REPASSE']
+        due_date = row['VENCIMENTO']
 
         # Se a situação estiver vazia ou não for 'pago', definir como 'rever'
         situation = 'REVER' if pd.isna(situation) or situation.lower() != 'pago' else situation
@@ -51,7 +52,9 @@ def read_excel_archive(archive_name, info_tenants):
                 'Valor ADM': adm_amount,
                 'Multa/Desconto': assessment_discont,
                 'Situação': situation,
-                'Mês': month
+                'Mês': month,
+                'Data Repasse': transfer_date,
+                'Vencimento': due_date
            })
 
 def roundIfIsNan(value):
@@ -60,25 +63,53 @@ def roundIfIsNan(value):
     else:
         round(value,2)
 
+def printTenants(info):
+    return print(f"\nLocatário: {info['Locatário']},\n  Aluguel: {info['Aluguel']},\n  Valor do boleto: {info['Valor Boleto']},\n  Valor Repasse: {info['Repasse']},\n  Água: {info['Água']},\n  Luz: {info['Luz']},\n  Gás:{info['Gás']},\n  Condominio: {info['Condominio']},\n  IPTU: {info['IPTU']},\n Valor ADM: {info['Valor ADM']},\n  Multa/Desconto: {info['Multa/Desconto']},\n  Situação no mês de {info['Mês']}: {info['Situação']}\n ")
+
 def showAllRecords(info_locatarios_sorted):
     # Exibir informações ordenadas
     for info in info_locatarios_sorted:  
-        print(f"\nLocatário: {info['Locatário']},\n  Aluguel: {info['Aluguel']},\n  Valor do boleto: {info['Valor Boleto']},\n  Valor Repasse: {info['Repasse']},\n  Água: {info['Água']},\n  Luz: {info['Luz']},\n  Gás:{info['Gás']},\n  Condominio: {info['Condominio']},\n  IPTU: {info['IPTU']},\n Valor ADM: {info['Valor ADM']},\n  Multa/Desconto: {info['Multa/Desconto']},\n  Situação no mês de {info['Mês']}: {info['Situação']}\n ")
+        printTenants(info)
 
 def showSomeRecords(info_locatarios_sorted):
-    # exibi 10 registros
-    for i in range(min(110, len(info_locatarios_sorted))):
+    # exibi num x de registros
+    for i in range(min(2, len(info_locatarios_sorted))):
         info = info_locatarios_sorted[i]
-        print(f"\nLocatário: {info['Locatário']},\n  Aluguel: {info['Aluguel']},\n  Valor do boleto: {info['Valor Boleto']},\n  Valor Repasse: {info['Repasse']},\n  Água: {info['Água']},\n  Luz: {info['Luz']},\n  Gás:{info['Gás']},\n  Condominio: {info['Condominio']},\n  IPTU: {info['IPTU']},\n Valor ADM: {info['Valor ADM']},\n  Multa/Desconto: {info['Multa/Desconto']},\n  Situação no mês de {info['Mês']}: {info['Situação']}\n ")
+        printTenants(info)
+
+def showrRecordsWithPaymentsOk(info_locatarios):
+    # exibi com situação == pago
+    for i in range(len(info_locatarios)):
+        info = info_locatarios[i]
+        if info['Situação'] == 'PAGO':
+             printTenants(info)
+
+def sortedByName(tenants):
+    tenants_sorted = sorted(tenants, key=lambda x: x['Locatário'])
+    return tenants_sorted
+
+def sortedByDate(tenants):
+    tenants_sorted = sorted(
+        [tenant for tenant in tenants if pd.notna(tenant['Vencimento']) and tenant['Vencimento'] != ''],
+        key=lambda x: x['Vencimento']
+    )
+    return tenants_sorted
+
 
 # Caminho relativo para o arquivo na mesma pasta
-archive = os.path.abspath('./JOACIR ROCHA OUTUBRO 23 - copia.xlsx')  # Obtém o caminho absoluto
+# archive = os.path.abspath('./JOACIR ROCHA OUTUBRO 23 - copia.xlsx')  # Obtém o caminho absoluto
+archive = os.path.abspath('./JOACIR ROCHA DEZEMBRO 23 - copia.xlsx')  # Obtém o caminho absoluto 
 
 info_tenant = []
 
 read_excel_archive(archive, info_tenant)
 
-info_locatarios_sorted = sorted(info_tenant, key=lambda x: x['Locatário'])
+#sorted by name
+# info_tenants_sorted = sortedByName(info_tenant)
 
-showSomeRecords(info_locatarios_sorted)
-# showAllRecords(info_locatarios_sorted)
+#sorted by date
+info_tenants_sorted = sortedByDate(info_tenant)
+
+showrRecordsWithPaymentsOk(info_tenants_sorted)
+# showSomeRecords(info_tenants_sorted)
+# showAllRecords(info_tenants_sorted)
