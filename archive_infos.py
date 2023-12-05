@@ -13,5 +13,6 @@ def mostrar_info_arquivo(nome_arquivo):
     print(f"\nPrimeiras linhas do DataFrame:\n{df.head()}")
 
 # Caminho relativo para o arquivo na mesma pasta
-arquivo = os.path.abspath('./JOACIR ROCHA OUTUBRO 23 - copia.xlsx')  
+# arquivo = os.path.abspath('./JOACIR ROCHA OUTUBRO 23 - copia.xlsx')  
+arquivo = os.path.abspath('./JOACIR ROCHA DEZEMBRO 23 - copia.xlsx')  # Obtém o caminho absoluto
 mostrar_info_arquivo(arquivo)
