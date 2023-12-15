@@ -36,6 +36,12 @@ def sortedByDate(tenants, day):
     filtered_tenants_name = sortedByName(filtered_tenants)
     return filtered_tenants_name
 
+def showThisMonth(tenants):
+    tenants_sorted = sorted(
+        [tenant for tenant in tenants if pd.notna(tenant['Vencimento']) and tenant['Vencimento'] != ''],
+        key=lambda x: x['Vencimento']
+    )
+    return tenants_sorted
 
 # Caminho relativo para o arquivo na mesma pasta
 # archive = os.path.abspath('./JOACIR ROCHA OUTUBRO 23 - copia.xlsx')  # Obtém o caminho absoluto
@@ -49,7 +55,8 @@ read_excel_archive(archive, info_tenant)
 # info_tenants_sorted = sortedByName(info_tenant)
 
 #sorted by date
-info_tenants_sorted = sortedByDate(info_tenant, 15.0)
+# info_tenants_sorted = sortedByDate(info_tenant, 15.0)
+info_tenants_sorted = showThisMonth(info_tenant)    
 
 showrRecordsWithPaymentsOk(info_tenants_sorted)
 # showSomeRecords(info_tenants_sorted)
