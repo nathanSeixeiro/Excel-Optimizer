@@ -3,11 +3,10 @@ import util as ut
 import read_excel as rd
 
 def showrRecordsWithPaymentsOk(info_locatarios):
-    # exibi com situação == pago
     for i in range(len(info_locatarios)):
         info = info_locatarios[i]
         if info['Situação'] == 'PAGO':
-             printTenants(info)
+            ut.printTenants(info)
 
 def choseFunc(op, tenants):
     if op == 1:
@@ -16,8 +15,11 @@ def choseFunc(op, tenants):
         info_tenants_sorted = ut.showThisMonth(tenants)    
     return info_tenants_sorted
 
-archive = os.path.abspath('./spreadsheets/JOACIR ROCHA DEZEMBRO 23.xlsx') 
-info_tenant = []
-rd.read_excel_archive(archive, info_tenant)
-info_tenants_sorted = choseFunc(1, info_tenant)
-showrRecordsWithPaymentsOk(info_tenants_sorted)
+def main():
+    archive = os.path.abspath('./spreadsheets/JOACIR ROCHA DEZEMBRO 23.xlsx') 
+    info_tenant = []
+    rd.read_excel_archive(archive, info_tenant)
+    info_tenants_sorted = choseFunc(2, info_tenant)
+    showrRecordsWithPaymentsOk(info_tenants_sorted)
+
+main()
