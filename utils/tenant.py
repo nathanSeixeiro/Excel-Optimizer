@@ -26,8 +26,8 @@ def main():
     archive = os.path.abspath('./spreadsheets/JOACIR ROCHA JANEIRO 24.xlsx')  # Obtém o caminho absoluto
     info_tenant = []
     rd.read_excel_archive(archive, info_tenant)
-    # showSomeRecords(info_tenant)
-    # showAllRecords(info_tenant)
-    printTenantsNames(info_tenant)
+    showSomeRecords(info_tenant) # alguns registros
+    # showAllRecords(info_tenant) # todos os registros
+    # printTenantsNames(info_tenant) # nome dos inquilinos
 
 main()
