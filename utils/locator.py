@@ -21,7 +21,7 @@ def printLocators(info):
         print(f"\nProprietario: {item['Name']},\nNumero: {item['Number']}\n")
 
 def main():
-    archive = os.path.abspath('./spreadsheets/JOACIR ROCHA DEZEMBRO 23.xlsx')
+    archive = os.path.abspath('./spreadsheets/JOACIR ROCHA JANEIRO 24.xlsx')
     info = []
     getLocators(archive, info)
     printLocators(info)
