@@ -1,7 +1,7 @@
 import os
 import pandas as pd
-import util as ut
-import read_excel as rd
+import api.manipulation.utils.util as ut
+import api.manipulation.utils.read_excel as rd
 
 def showAllRecords(info_tenants):
     info_tenants_sorted = ut.sortedByName(info_tenants)

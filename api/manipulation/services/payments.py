@@ -1,6 +1,6 @@
 import os
-import util as ut
-import read_excel as rd
+import api.manipulation.utils.util as ut
+import api.manipulation.utils.read_excel as rd
 
 def showrRecordsWithPaymentsOk(info_locatarios):
     for i in range(len(info_locatarios)):

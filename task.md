@@ -4,13 +4,16 @@
 
 - get spreadsheet
 - butons to show specific option
+
   - locator
   - tenant
   - payments
   - repasses
+  - make the responses return in json
+
 - one api in js
+
   - for archives upload
-- make the responses return in json
 
 - front
   - page of sucess
