@@ -10,4 +10,8 @@
   - repasses
 - one api in js
   - for archives upload
-- makke the responses return in json
+- make the responses return in json
+
+- front
+  - page of sucess
+  - page of error

@@ -2,7 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const cors = require("cors");
 const path = require("path");
-const fs = "fs";
+const fs = require("fs");
 
 const app = express();
 const port = 3000;
@@ -11,7 +11,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../../spreadsheets");
+    cb(null, "../spreadsheets");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -34,13 +34,12 @@ const upload = multer({
   },
 });
 
-// Rota para renderizar o formulário de upload
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+app.post("/upload", upload.single("excelFile"), (req, res) => {
+  // lógica para apagar se houver um arquivo existente
+  console.log("sucess");
+  res.json({ msg: "sucess" }).status(200);
 });
 
-app.post("/upload", upload.single("excelFile"), (req, res) => {
-  res.send("sucess");
-});
+// rota de delete para o arquivo
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
