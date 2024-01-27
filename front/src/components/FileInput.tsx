@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from "react";
 import { DropzoneState, useDropzone } from "react-dropzone";
+import api from "../config/axios";
+
 import { UploadIcon } from "./../icons/UploadIcon";
 import { FileIcon } from "../icons/FileIcon";
 import { CloseIcon } from "../icons/CloseIcon";
@@ -32,7 +34,22 @@ const FileInput = () => {
     },
   });
 
-  if (file) return <HasFile file={file} removeFile={removeFile} />;
+  const sendFile = (file: File) => {
+    const files: File[] = [];
+    files.push(file);
+    const formData: FormData = new FormData();
+    formData.append("excelFile", files[0]);
+    api
+      .post("/upload", formData)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    console.log(file);
+  };
+
+  if (file) {
+    sendFile(file);
+    return <HasFile file={file} removeFile={removeFile} />;
+  }
 
   return <Input dropzone={dropzone} />;
 };
@@ -67,7 +84,13 @@ const Input = ({ dropzone }: InputProps) => {
           )}
         </div>
       </label>
-      <input {...getInputProps()} className="hidden " />
+      <input
+        {...getInputProps()}
+        className="hidden"
+        type="file"
+        name="excelFile"
+        accept=".xls, .xlsx"
+      />
     </div>
   );
 };
